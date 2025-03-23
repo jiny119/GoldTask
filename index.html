@@ -1,53 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyperTask - Game & Survey</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        button {
-            font-size: 18px;
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PyperTask - Game, Survey, Tasks, Referral & Settings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f2f2f2;
+      text-align: center;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    /* Settings Modal Style */
+    #settingsModal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 5px;
+      width: 300px;
+    }
+    /* Dark Theme Style */
+    .dark-theme {
+      background-color: #333 !important;
+      color: #fff !important;
+    }
+    /* Status Display */
+    #status {
+      margin: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-    <h2>Welcome to PyperTask</h2>
+  <h2>Welcome to PyperTask</h2>
+  
+  <!-- Status Display -->
+  <div id="status">Coins: 0 | Referrals: 0</div>
 
-    <!-- Game Button -->
-    <button onclick="openGame()">Play Game</button>
+  <!-- Main Buttons -->
+  <button onclick="openGame()">Play Game</button>
+  <button onclick="openSurvey()">Survey</button>
+  <button onclick="completeTask()">Complete Task (+5 coins)</button>
+  <button onclick="handleReferralClick()">Referral (Click 5 times = +1 referral)</button>
+  <button onclick="openSettings()">Settings</button>
 
-    <!-- Survey Button -->
-    <button onclick="openSurvey()">Survey</button>
+  <!-- Settings Modal -->
+  <div id="settingsModal">
+    <div class="modal-content">
+      <h3>Settings</h3>
+      <button onclick="logout()">Logout</button>
+      <button onclick="shareApp()">Share</button>
+      <button onclick="toggleSound()">Toggle Sound</button>
+      <button onclick="toggleTheme()">Toggle Theme</button>
+      <button onclick="dailyBonus()">Daily Bonus</button>
+      <button onclick="withdrawal()">Withdrawal</button>
+      <br><br>
+      <button onclick="closeSettings()">Close</button>
+    </div>
+  </div>
 
-    <script>
-        // Function to Open Game in New Tab
-        function openGame() {
-            let gameURL = "https://html5.gamemonetize.co/kh8mri3a3hyrxqmqcxvipggs0tyed7xy/"; // Change this URL if needed
-            window.open(gameURL, "_blank");
-        }
+  <script>
+    // Variables (Persistence can be added via localStorage if needed)
+    let coinBalance = 0;
+    let referralClicks = 0;
+    let referralCount = 0;
+    const minWithdrawalCoins = 15000;
+    const requiredReferralCount = 10;
+    
+    // Update status display
+    function updateStatus() {
+      document.getElementById("status").innerText = `Coins: ${coinBalance} | Referrals: ${referralCount}`;
+    }
+    
+    // Function to Open Game in New Tab
+    function openGame() {
+      const gameURL = "https://html5.gamemonetize.co/kh8mri3a3hyrxqmqcxvipggs0tyed7xy/";
+      window.open(gameURL, "_blank");
+    }
 
-        // Function to Open YouTube Channel for Survey
-        function openSurvey() {
-            let confirmSubscribe = confirm("Please subscribe to the channel to complete the survey. Click OK after subscribing.");
-            if (confirmSubscribe) {
-                window.open("https://www.youtube.com/@ToonCraftStudio-f7o", "_blank");
-                setTimeout(() => {
-                    alert("Thank you! Now return and continue.");
-                }, 3000);
-            } else {
-                alert("Survey will be completed only after subscription.");
-            }
-        }
-    </script>
+    // Function to Open YouTube Channel for Survey
+    function openSurvey() {
+      const confirmSubscribe = confirm("Please subscribe to the channel to complete the survey. Click OK after subscribing.");
+      if (confirmSubscribe) {
+        window.open("https://www.youtube.com/@ToonCraftStudio-f7o", "_blank");
+        setTimeout(() => {
+          alert("Thank you! Now return and continue.");
+        }, 3000);
+      } else {
+        alert("Survey will be completed only after subscription.");
+      }
+    }
+
+    // Function for Completing a Task (adds 5 coins)
+    function completeTask() {
+      coinBalance += 5;
+      alert("Task completed! You've earned 5 coins.");
+      updateStatus();
+    }
+    
+    // Function to simulate referral click.
+    // Every 5 clicks, referral count increases by 1.
+    function handleReferralClick() {
+      referralClicks++;
+      if (referralClicks >= 5) {
+        referralCount++;
+        referralClicks = 0; // Reset after 5 clicks
+        alert("Referral count increased by 1!");
+      } else {
+        alert(`Referral click registered! (${referralClicks}/5)`);
+      }
+      updateStatus();
+    }
+
+    // Settings Modal Functions
+    function openSettings() {
+      document.getElementById("settingsModal").style.display = "block";
+    }
+    function closeSettings() {
+      document.getElementById("settingsModal").style.display = "none";
+    }
+
+    // Logout Functionality (Demo)
+    function logout() {
+      alert("Logged out!");
+      // Optional: Redirect to login page
+    }
+
+    // Share Functionality using Web Share API (Fallback available)
+    function shareApp() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'PyperTask App',
+          text: 'Check out this amazing app!',
+          url: window.location.href,
+        })
+        .then(() => console.log('Thanks for sharing!'))
+        .catch((error) => console.error('Error sharing:', error));
+      } else {
+        prompt("Copy this URL and share:", window.location.href);
+      }
+    }
+
+    // Toggle Sound Functionality (Demo)
+    let soundOn = true;
+    function toggleSound() {
+      soundOn = !soundOn;
+      alert("Sound " + (soundOn ? "Enabled" : "Disabled"));
+    }
+
+    // Toggle Theme Functionality (Light/Dark Mode)
+    function toggleTheme() {
+      document.body.classList.toggle("dark-theme");
+    }
+
+    // Daily Bonus Functionality (Demo)
+    function dailyBonus() {
+      coinBalance += 5; // Daily bonus gives 5 coins (adjust as needed)
+      alert("Daily Bonus Collected! (+5 coins)");
+      updateStatus();
+    }
+
+    // Withdrawal Functionality
+    function withdrawal() {
+      if (referralCount >= requiredReferralCount && coinBalance >= minWithdrawalCoins) {
+        alert("Withdrawal Request Submitted! Our team will process it shortly.");
+        // Optional: Deduct coins or reset counters after withdrawal.
+      } else {
+        alert("Withdrawal not approved.\nRequirements:\n- At least " + requiredReferralCount + " referrals\n- Minimum " + minWithdrawalCoins + " coins.\nCurrent Status:\nReferrals: " + referralCount + ", Coins: " + coinBalance);
+      }
+    }
+
+    // Initial status update
+    updateStatus();
+  </script>
 
 </body>
 </html>
