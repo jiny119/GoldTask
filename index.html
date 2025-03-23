@@ -3,20 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey Button</title>
+    <title>PyperTask - Game & Survey</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-    <h2>Complete the Survey by Subscribing</h2>
-    
+    <h2>Welcome to PyperTask</h2>
+
+    <!-- Game Button -->
+    <button onclick="openGame()">Play Game</button>
+
+    <!-- Survey Button -->
     <button onclick="openSurvey()">Survey</button>
 
     <script>
+        // Function to Open Game in New Tab
+        function openGame() {
+            let gameURL = "https://html5.gamemonetize.co/kh8mri3a3hyrxqmqcxvipggs0tyed7xy/"; // Change this URL if needed
+            window.open(gameURL, "_blank");
+        }
+
+        // Function to Open YouTube Channel for Survey
         function openSurvey() {
             let confirmSubscribe = confirm("Please subscribe to the channel to complete the survey. Click OK after subscribing.");
             if (confirmSubscribe) {
                 window.open("https://www.youtube.com/@ToonCraftStudio-f7o", "_blank");
-                alert("Thank you! Now return and continue.");
+                setTimeout(() => {
+                    alert("Thank you! Now return and continue.");
+                }, 3000);
             } else {
                 alert("Survey will be completed only after subscription.");
             }
