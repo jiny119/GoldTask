@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyperTask</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Survey Button</title>
 </head>
 <body>
-    <h1>Welcome to PyperTask</h1>
 
-    <button onclick="watchAds()">Watch Ads</button>
-    <button onclick="playGame()">Play Game</button>
-    <button onclick="installApp()">Install App</button>
+    <h2>Complete the Survey by Subscribing</h2>
+    
     <button onclick="openSurvey()">Survey</button>
-    <button onclick="openSettings()">Settings</button>
-    <button onclick="checkReferrals()">Referral</button>
-    <button onclick="withdraw()">Withdraw</button>
 
-    <script src="script.js"></script>
+    <script>
+        function openSurvey() {
+            let confirmSubscribe = confirm("Please subscribe to the channel to complete the survey. Click OK after subscribing.");
+            if (confirmSubscribe) {
+                window.open("https://www.youtube.com/@ToonCraftStudio-f7o", "_blank");
+                alert("Thank you! Now return and continue.");
+            } else {
+                alert("Survey will be completed only after subscription.");
+            }
+        }
+    </script>
+
 </body>
 </html>
